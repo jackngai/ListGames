@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  TableViewController.swift
 //  ListGames
 //
 //  Created by Jack Ngai on 6/19/17.
@@ -7,18 +7,17 @@
 //
 
 import UIKit
+import Alamofire
+import AlamofireObjectMapper
 
-class ViewController: UIViewController {
+
+class TableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
 
 
 }
