@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		2EBD45DF83D104C68D1FDCD1 /* Pods_ListGames.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B22C12AC1FDAA60B763202C /* Pods_ListGames.framework */; };
+		981C3AEB1EFB1E5300A419C9 /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = 981C3AEA1EFB1E5300A419C9 /* Game.swift */; };
 		98B2A0711EF82AD100C99779 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B2A0701EF82AD100C99779 /* AppDelegate.swift */; };
 		98B2A0731EF82AD100C99779 /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B2A0721EF82AD100C99779 /* TableViewController.swift */; };
 		98B2A0781EF82AD100C99779 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 98B2A0771EF82AD100C99779 /* Assets.xcassets */; };
@@ -17,6 +18,7 @@
 /* Begin PBXFileReference section */
 		6B22C12AC1FDAA60B763202C /* Pods_ListGames.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ListGames.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8309F51899E62948FAD92D0D /* Pods-ListGames.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ListGames.release.xcconfig"; path = "Pods/Target Support Files/Pods-ListGames/Pods-ListGames.release.xcconfig"; sourceTree = "<group>"; };
+		981C3AEA1EFB1E5300A419C9 /* Game.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
 		98B2A06D1EF82AD100C99779 /* ListGames.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ListGames.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		98B2A0701EF82AD100C99779 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		98B2A0721EF82AD100C99779 /* TableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewController.swift; sourceTree = "<group>"; };
@@ -78,6 +80,7 @@
 			children = (
 				98B2A0701EF82AD100C99779 /* AppDelegate.swift */,
 				98B2A0721EF82AD100C99779 /* TableViewController.swift */,
+				981C3AEA1EFB1E5300A419C9 /* Game.swift */,
 				98B2A0771EF82AD100C99779 /* Assets.xcassets */,
 				98B2A0791EF82AD100C99779 /* LaunchScreen.storyboard */,
 				98B2A07C1EF82AD100C99779 /* Info.plist */,
@@ -210,6 +213,7 @@
 			files = (
 				98B2A0731EF82AD100C99779 /* TableViewController.swift in Sources */,
 				98B2A0711EF82AD100C99779 /* AppDelegate.swift in Sources */,
+				981C3AEB1EFB1E5300A419C9 /* Game.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
