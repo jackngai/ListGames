@@ -13,7 +13,8 @@ class Game: Mappable {
     
     var id: Int?
     var name: String?
-    var popularity: Float?
+    var coverArt: UIImage?
+    var url: String?
     
     required init?(map: Map){
         
@@ -22,7 +23,29 @@ class Game: Mappable {
     func mapping(map: Map) {
         id <- map["id"]
         name <- map["name"]
-        popularity <- map["popularity"]
+
+        url <- map["cover.url"]
+
     }
     
 }
+
+//class CoverArt: Mappable {
+//    
+//    var url: String?
+//    var cloudinary_id: String?
+//    var width: Int?
+//    var height: Int?
+//    
+//    required init?(map: Map) {
+//        
+//    }
+//    
+//    func mapping(map: Map) {
+//        url <- map["url"]
+//        cloudinary_id <- map["cloudinary_id"]
+//        width <- map["width"]
+//        height <- map["height"]
+//    }
+//    
+//}

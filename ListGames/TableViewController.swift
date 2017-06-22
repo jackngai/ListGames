@@ -18,9 +18,12 @@ class TableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        tableView.register(TableViewCell.self, forCellReuseIdentifier: "game")
+        tableView.rowHeight = 100
+        
         let headers: HTTPHeaders = ["X-Mashape-Key":"YOUR_KEY", "Accept":"application/json"]
         
-        let parameters: Parameters = ["fields":"name,popularity", "limit":"50","search":"NBA", "order":"popularity:desc"]
+        let parameters: Parameters = ["fields":"name,cover", "limit":"20","search":"NBA"]
 //        
 //        Alamofire.request("https://igdbcom-internet-game-database-v1.p.mashape.com/games/?", method: .get, parameters: parameters, encoding: URLEncoding.queryString, headers: headers).response { response in
 //            print("Request: \(String(describing: response.request))")
@@ -39,7 +42,22 @@ class TableViewController: UITableViewController {
             
             if let gamesArray = self.gamesArray{
                 for game in gamesArray{
-                    print(game.name!)
+                    print("Name: \(game.name!), ID: \(game.id!)")
+                    if let url = game.url {
+                        game.url = "https:" + url
+                    }
+                    print(game.url)
+                    
+                    if let url = game.url{
+                        Alamofire.request(url).responseData(completionHandler: { (response) in
+                            if let data = response.result.value {
+                                game.coverArt = UIImage(data: data)
+                                self.tableView.reloadData()
+                            }
+                        })
+                    }
+                    
+
                 }
             }
             
@@ -51,9 +69,14 @@ class TableViewController: UITableViewController {
         guard let gamesArray = gamesArray else {
             return UITableViewCell()
         }
-        let cell = UITableViewCell(frame: CGRect.zero)
-        cell.textLabel?.text = gamesArray[indexPath.row].name
-        return cell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "game", for: indexPath) as? TableViewCell
+        if let cell = cell{
+            cell.gameName.text = gamesArray[indexPath.row].name
+            cell.gameCoverArt.image = gamesArray[indexPath.row].coverArt
+            return cell
+        } else {
+            return UITableViewCell()
+        }
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
