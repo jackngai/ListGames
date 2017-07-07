@@ -19,7 +19,7 @@ class TableViewCell: UITableViewCell {
     let gameCoverArt:UIImageView = {
        let imageView = UIImageView(frame: CGRect.zero)
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.image = #imageLiteral(resourceName: "nba2k18")
+//        imageView.image = #imageLiteral(resourceName: "nba2k18")
         return imageView
     }()
 

@@ -9,44 +9,75 @@
 import UIKit
 import Alamofire
 import AlamofireObjectMapper
+import RealmSwift
 
 
-class TableViewController: UITableViewController {
+class TableViewController: UITableViewController, UISearchBarDelegate {
     
     var gamesArray:[Game]?
+    
+    let searchBar:UISearchBar = {
+        let sBar = UISearchBar(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 50))
+        sBar.tintColor = .lightGray
+        sBar.translatesAutoresizingMaskIntoConstraints = false
+        return sBar
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        searchBar.delegate = self
+        
+        setupViews()
+        
         tableView.register(TableViewCell.self, forCellReuseIdentifier: "game")
         tableView.rowHeight = 100
         
-        let headers: HTTPHeaders = ["X-Mashape-Key":"YOUR_KEY", "Accept":"application/json"]
+        let headers: HTTPHeaders = ["X-Mashape-Key":"6ZrY0Zzd9cmshElg8fzEgqJFFuGZp1fw1k4jsnkF3roQLBNEJX", "Accept":"application/json"]
         
         let parameters: Parameters = ["fields":"name,cover", "limit":"20","search":"NBA"]
-//        
-//        Alamofire.request("https://igdbcom-internet-game-database-v1.p.mashape.com/games/?", method: .get, parameters: parameters, encoding: URLEncoding.queryString, headers: headers).response { response in
-//            print("Request: \(String(describing: response.request))")
-//            print("Response: \(String(describing: response.response))")
-//            print("Error: \(String(describing: response.error))")
-//            
-//            if let data = response.data, let utf8Text = String(data: data, encoding: .utf8) {
-//                print("Data: \(utf8Text)")
-//            }
-//        }
         
-        Alamofire.request("https://igdbcom-internet-game-database-v1.p.mashape.com/games/?", method: .get, parameters: parameters, encoding: URLEncoding.queryString, headers: headers).responseArray { (response: DataResponse<[Game]>) in
+        Alamofire.request("https://igdbcom-internet-game-database-v1.p.mashape.com/games/?", method: .get, parameters: parameters, encoding: URLEncoding.queryString, headers: headers).responseArray { [weak self](response: DataResponse<[Game]>) in
             
-            self.gamesArray = response.result.value
-            self.tableView.reloadData()
+            guard let strongSelf = self else {
+                return
+            }
             
-            if let gamesArray = self.gamesArray{
+            strongSelf.gamesArray = response.result.value
+            //self.tableView.reloadData()
+            
+            let realm = try? Realm()
+            
+            try? realm?.write {
+                realm?.add(strongSelf.gamesArray!, update: true)
+            }
+            
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime(uptimeNanoseconds: 5000), execute: { 
+                strongSelf.tableView.reloadData()
+            })
+            
+            /*
+            
+            strongSelf.gamesArray?.forEach({ (game) in
+                realm.
+            })
+            
+            
+            
+            if let gamesArray = strongSelf.gamesArray{
                 for game in gamesArray{
-                    print("Name: \(game.name!), ID: \(game.id!)")
-                    if let url = game.url {
-                        game.url = "https:" + url
+                    
+                    guard let gameName = game.name else {
+                        break
                     }
-                    print(game.url)
+                    
+                    print("Name: \(gameName), ID: \(game.id)")
+                    if var url = game.url {
+                        url = "https:" + url
+                        print(url)
+                        game.url = url
+                    }
+                
                     
                     if let url = game.url{
                         Alamofire.request(url).responseData(completionHandler: { (response) in
@@ -59,10 +90,21 @@ class TableViewController: UITableViewController {
                     
 
                 }
-            }
+            } */
             
         }
         
+    }
+    
+    func setupViews(){
+        
+        tableView.tableHeaderView = searchBar
+        
+//        view.addSubview(searchBar)
+//        
+//        searchBar.topAnchor.constraint(equalTo: view.layoutMarginsGuide.topAnchor).isActive = true
+//        searchBar.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor).isActive = true
+//        searchBar.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor).isActive = true
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -72,7 +114,11 @@ class TableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "game", for: indexPath) as? TableViewCell
         if let cell = cell{
             cell.gameName.text = gamesArray[indexPath.row].name
-            cell.gameCoverArt.image = gamesArray[indexPath.row].coverArt
+            
+            if let data = gamesArray[indexPath.row].coverArt {
+                let image = UIImage(data: data as Data)
+                cell.gameCoverArt.image = image
+            }
             return cell
         } else {
             return UITableViewCell()

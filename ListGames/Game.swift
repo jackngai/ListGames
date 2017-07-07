@@ -8,44 +8,40 @@
 
 import Foundation
 import ObjectMapper
+import RealmSwift
 
-class Game: Mappable {
+class Game: Object, Mappable {
     
-    var id: Int?
-    var name: String?
-    var coverArt: UIImage?
-    var url: String?
+    dynamic var id:Int = 0
+    dynamic var name: String?
+    dynamic var coverArt: NSData? = nil
+    dynamic var url: String?
     
-    required init?(map: Map){
-        
+    override static func primaryKey()-> String? {
+        return "id"
+    }
+    
+    required convenience init?(map: Map) {
+        self.init()
     }
     
     func mapping(map: Map) {
         id <- map["id"]
         name <- map["name"]
-
         url <- map["cover.url"]
-
+        if let url = url {
+            getData(urlString: "https:" + url)
+        } else {
+            // set base image
+        }
+        
     }
     
+    private func getData(urlString: String){
+        guard let url = URL(string: urlString) else {
+            return
+        }
+
+    }
 }
 
-//class CoverArt: Mappable {
-//    
-//    var url: String?
-//    var cloudinary_id: String?
-//    var width: Int?
-//    var height: Int?
-//    
-//    required init?(map: Map) {
-//        
-//    }
-//    
-//    func mapping(map: Map) {
-//        url <- map["url"]
-//        cloudinary_id <- map["cloudinary_id"]
-//        width <- map["width"]
-//        height <- map["height"]
-//    }
-//    
-//}
